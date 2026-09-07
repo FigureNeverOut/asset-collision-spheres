@@ -1,0 +1,26 @@
+{
+  "source": {
+    "usd_path": "../../assets/bowl_001/Aligned.usd",
+    "mesh_prim": "/World/Aligned/Scan_Scan_003",
+    "unit_scale_m": 0.001,
+    "up_axis": "Y",
+    "expected_extents_m": [
+      0.322358826,
+      0.145137223,
+      0.323676452
+    ],
+    "unit_note": "Annotation absolute_size_mm and object_parameters.size match raw vertices; explicitly override the source USD metersPerUnit=0.01."
+  },
+  "generation": {
+    "mode": "auto_geometry",
+    "sphere_budget": 32,
+    "max_outward_offset_m": 0.006,
+    "seed": 5,
+    "candidate_sample_count": 6000,
+    "patch_count": 64,
+    "balance_strength": 1.5,
+    "probe_radius_m": 0.006,
+    "probe_penetration_m": 0.0015,
+    "repair_rounds": 1
+  }
+}

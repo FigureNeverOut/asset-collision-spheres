@@ -1,0 +1,8 @@
+# Dependency versions used for the extraction regression checks (Python 3.12).
+# Optional dependencies are constrained here, not automatically installed.
+numpy==2.3.1
+scipy==1.17.0
+trimesh==4.11.1
+rtree==1.4.1
+usd-core==25.11
+pytest==9.1.1

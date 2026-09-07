@@ -1,0 +1,9 @@
+{
+  "mode": "auto_geometry",
+  "sphere_budget": 16,
+  "max_outward_offset_m": 0.004,
+  "candidate_sample_count": 500,
+  "patch_count": 16,
+  "seed": 5,
+  "repair_rounds": 1
+}

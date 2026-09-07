@@ -1,0 +1,96 @@
+{
+  "source_head": "d0e431ce1da04f70724ebeb0ab81a68236b5a7b4",
+  "source_state": "Untracked local additions, not part of source HEAD",
+  "files": [
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/src/fastsim_plugin_mission/task/unisolver/backends/curobo/auto_geometry_spheres.py",
+      "destination": "src/asset_collision_spheres/auto_geometry_spheres.py",
+      "source_sha256": "cc90f2e19be5abad5e2afd90f56182296fd43e1363273b88713689f551e87aa2",
+      "adaptation": "unchanged"
+    },
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/src/fastsim_plugin_mission/task/unisolver/backends/curobo/mesh_region_spheres.py",
+      "destination": "src/asset_collision_spheres/mesh_region_spheres.py",
+      "source_sha256": "57e8fac9d87922c23223d78a5e970d68b2f7710a67b5e5702aeadbbf08109208",
+      "adaptation": "unchanged"
+    },
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/src/fastsim_plugin_mission/task/unisolver/backends/curobo/mesh_attachment.py",
+      "destination": "src/asset_collision_spheres/mesh_attachment.py",
+      "source_sha256": "60bdf16b09b7c923fd8147f30c3209f79ab70904bcd47778b80efbe80f5dab06",
+      "adaptation": "unchanged"
+    },
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/src/fastsim_plugin_mission/task/unisolver/backends/curobo/attachment_spheres.py",
+      "destination": "src/asset_collision_spheres/attachment_spheres.py",
+      "source_sha256": "6ca7a958b11d3d7e7744cd4be706093f62d726d3effff1fd98343d7ab3101ed9",
+      "adaptation": "unchanged"
+    },
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/src/fastsim_plugin_mission/task/unisolver/backends/curobo/solid_box_regions.py",
+      "destination": "src/asset_collision_spheres/solid_box_regions.py",
+      "source_sha256": "fc930ac9c558eb5f36adba76041af4d916b5a3f6bfc0c779cf7d4c38bcd9606f",
+      "adaptation": "unchanged"
+    },
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/tests/task/unisolver/test_auto_geometry_spheres.py",
+      "destination": "tests/test_auto_geometry_spheres.py",
+      "source_sha256": "cbfd4501eff2dbba1669a28d1e2cc3e91099960e18d193c61ac0b9e212d3a9b7",
+      "adaptation": "imports only"
+    },
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/tests/task/unisolver/test_mesh_region_spheres.py",
+      "destination": "tests/test_mesh_region_spheres.py",
+      "source_sha256": "2e02970a1683a58650638355a8a758c7291d006f0fcf1643a72b005f0e47c88f",
+      "adaptation": "imports only"
+    },
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/tests/task/unisolver/test_structure_aware_attachment_spheres.py",
+      "destination": "tests/test_structure_aware_attachment_spheres.py",
+      "source_sha256": "df34fcd2c96462d3113ae81e8eef0d15514f452006f84f923ad6f49057637703",
+      "adaptation": "imports only"
+    },
+    {
+      "source": "FastSim-Plugins/packages/fastsim-plugin-mission/tests/task/unisolver/test_solid_box_regions.py",
+      "destination": "tests/test_solid_box_regions.py",
+      "source_sha256": "f057502884009f22d09c61b9e37f47061c215256c5c3b7392aee51eec0cf5329",
+      "adaptation": "imports only"
+    },
+    {
+      "source": "task2sim/3_layout2fastsim/preview_mesh_spheres.py",
+      "destination": "src/asset_collision_spheres/usd.py",
+      "source_sha256": "fd1118ebdc327fe5d3d7fd21aa13d2e3d1b1c405b4019eabd32a1c78eae4ddb8",
+      "adaptation": "Extract load_material_mesh only; replace package import; add stdlib imports and module documentation"
+    },
+    {
+      "source": "task2sim/3_layout2fastsim/preview_configs/1e_mug_auto_geometry.json",
+      "destination": "examples/configs/1e_mug_auto_geometry.json",
+      "source_sha256": "5506bd87ee097c40b68a3d27073f1a2062169aef5ec4b72596086a51b211f398",
+      "adaptation": "JSON formatting; USD preset paths made relative; machine-specific provenance fields omitted"
+    },
+    {
+      "source": "task2sim/3_layout2fastsim/preview_configs/1e_mug_auto_geometry_32.json",
+      "destination": "examples/configs/1e_mug_auto_geometry_32.json",
+      "source_sha256": "861749608db03e7a846b6cc101cc272ea01ac2d8ac05fd31d5d5635ef5af6f7b",
+      "adaptation": "JSON formatting; USD preset paths made relative; machine-specific provenance fields omitted"
+    },
+    {
+      "source": "task2sim/3_layout2fastsim/preview_configs/1e_mug_mesh_regions.json",
+      "destination": "examples/configs/1e_mug_mesh_regions.json",
+      "source_sha256": "b39dd5175b651b912a3641583e5ae4c4bfd4c0662ed584b31be83e7f97a2a1bd",
+      "adaptation": "JSON formatting; USD preset paths made relative; machine-specific provenance fields omitted"
+    },
+    {
+      "source": "task2sim/3_layout2fastsim/preview_configs/bowl_001_auto_geometry.json",
+      "destination": "examples/configs/bowl_001_auto_geometry.json",
+      "source_sha256": "977297273ebcf3dda8604ff54a5122379a4287b7be361193151fa3eb00908799",
+      "adaptation": "JSON formatting; USD preset paths made relative; machine-specific provenance fields omitted"
+    },
+    {
+      "source": "task2sim/3_layout2fastsim/preview_configs/box_167_auto_geometry.json",
+      "destination": "examples/configs/box_167_auto_geometry.json",
+      "source_sha256": "33749d8b4013dd67c8217fc523a7cbe88d6db4ed7e3731ab2fb3e3dde401dad0",
+      "adaptation": "JSON formatting; USD preset paths made relative; machine-specific provenance fields omitted"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "usd_path": "../../assets/box_167/Aligned.usd",
+    "mesh_prim": "/World/Aligned/Scan_Scan_009",
+    "unit_scale_m": 0.001,
+    "up_axis": "Y",
+    "expected_extents_m": [
+      0.2787597045898437,
+      0.28412542724609374,
+      0.286150390625
+    ],
+    "unit_note": "Use the same raw-coordinate millimetre interpretation as bowl_001 in this dataset; object_parameters.size matches raw bounds. Explicitly override USD metersPerUnit=0.01."
+  },
+  "generation": {
+    "mode": "auto_geometry",
+    "sphere_budget": 32,
+    "max_outward_offset_m": 0.006,
+    "seed": 5,
+    "candidate_sample_count": 6000,
+    "patch_count": 64,
+    "balance_strength": 1.5,
+    "probe_radius_m": 0.006,
+    "probe_penetration_m": 0.0015,
+    "repair_rounds": 1
+  }
+}
