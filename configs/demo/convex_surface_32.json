@@ -1,0 +1,5 @@
+{
+  "mode": "convex_surface",
+  "shape_hint": "auto",
+  "max_spheres": 32
+}

@@ -1,116 +1,107 @@
 # Asset Collision Spheres
 
-将完整物体三角网格转换为碰撞球的独立 Python 接口与命令行工具。
-核心生成只使用 NumPy、SciPy、Trimesh、Rtree；无需 FastSim、cuRobo、Isaac Sim、机器人或 GPU。
-USD 输入可选依赖 OpenUSD (`usd-core`)。
+把物体三角网格转换为米制碰撞球的 Python 接口。面向已有环境的同事，
+**拿到源码即可调用，不需要安装本项目，不提供 HTTP 服务。**
 
-当前为实验版本：支持自动几何分球、手动区域分球，以及底层解析几何接口。
-输入必须是封闭、朝外且绕序一致的材质边界；带杯腔的实体杯壁可以满足这一条件。
-不自动填洞或用凸包替换原网格。默认入口不是 HTTP 服务，可由其他项目直接 import。
+核心只需要现有环境中的 NumPy、SciPy、Trimesh、Rtree；不依赖机器人、GPU、
+FastSim、cuRobo 或 Isaac。读取 USD 时才需要 `pxr`。
 
-## 安装与最小示例
+本轮只整理本地源码，**没有提交或推送 GitHub**。LICENSE 仍待确定；
+后续公开仓库前需要确定授权范围与许可证。
 
-Python 3.11+，在本仓库根目录执行：
+## 最简单的调用
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -c constraints-tested.txt -e '.[dev]'
-python examples/create_demo_assets.py
-asset-spheres --mesh outputs/demo/cup.obj --unit-scale-m 1 \
-  --config examples/configs/demo_auto.json --output outputs/cup_spheres.json
-python -m pytest -q
-```
-
-示例脚本自行生成杯、碗和盒子，无需下载资产。输出路径已存在时 CLI 会拒绝覆盖。
-`python -m asset_collision_spheres` 与 `asset-spheres` 等价。
-
-## Python 接口
+同事在自己的程序里指定一次本项目的 `src` 目录：
 
 ```python
-import json
-from pathlib import Path
-from asset_collision_spheres import load_mesh, generate_auto_geometry_spheres, make_report
+import sys
+sys.path.insert(0, "/path/to/asset-collision-spheres/src")
 
-mesh = load_mesh("outputs/demo/cup.obj", unit_scale_m=1.0)
-config = {
-    "sphere_budget": 32,
-    "max_outward_offset_m": 0.004,
-    "candidate_sample_count": 6000,
-    "seed": 5,
-}
-result = generate_auto_geometry_spheres(mesh, config)
-print(result.spheres.shape)  # (32, 4): x, y, z, radius，全部为米
-Path("outputs/api_result.json").write_text(
-    json.dumps(make_report(mesh, result, config), indent=2, allow_nan=False)
+from asset_collision_spheres import generate_from_file
+
+result = generate_from_file(
+    "object.obj",
+    unit_scale_m=0.001,        # 原文件是毫米；如果已经是米，填1
+    config={"max_spheres": 32},
 )
+print(result.spheres)          # NumPy [N,4]，每行 x、y、z、半径，全部为米
+print(result.selected_policy)  # convex_hull 或 original_surface
+print(result.review_required)
+result.save_json("outputs/result.json")  # 已有文件不覆盖
 ```
 
-也可直接传入已在所需局部坐标系下、以米为单位的 `trimesh.Trimesh`。
-直接传入网格时生成器不变换坐标；`load_mesh` 保留文件轴向并应用显式单位比例。
-OBJ/PLY/STL 读取会合并完全相同的顶点，恢复 STL 等格式的共享顶点拓扑；不会进行近似焊接或几何修补。
-多几何场景应先显式导出为一个材质网格。
+也可以在环境中设置 `PYTHONPATH=/path/to/asset-collision-spheres/src`，然后直接import。
+无需执行 `pip install .`。不要把未转换单位的毫米坐标直接传给米制网格接口。
 
-## 参数与诊断
+## 三个入口
 
-| 参数 | 含义 |
-| --- | --- |
-| `sphere_budget` | 显式球数，1–256；候选不足时报错 |
-| `max_outward_offset_m` | 显式外扩上限，无默认值；示例值不是通用规划安全距离 |
-| `candidate_sample_count` | 面积采样数，500–20000，默认 6000 |
-| `patch_count` | 三角形邻接图上的局部分块数，默认 64 |
-| `balance_strength` | 局部覆盖均衡权重，默认 1.5 |
-| `mode` | `auto_geometry`；`global` 是共享候选池的消融对照 |
-| `repair_rounds` | 同预算替换修复轮数，0–4，默认 0 |
-| `seed` | 固定随机种子；复现比较时也应固定依赖版本和网格顶点顺序 |
+```python
+from asset_collision_spheres import generate, generate_from_arrays, generate_from_file
 
-报告包含 `spheres_m`、坐标系、网格指纹、配置、区域及评估信息。
-关注 `missing_material_components`、`zero_contact_patch_ids`、`surface_coverage`、
-`ordinary_contact_misses` 与 `free_probe_intrusions_beyond_allowance`。
-`finite_checks_passed` 只表示有限几何检查通过；不证明全表面覆盖或连续运动无碰撞。
-尚无完整自相交检测。自动生成会保留遗漏整块材质的结果并置 `review_required`，供诊断使用。
+# 已有 trimesh.Trimesh，必须已在所需坐标系下且单位为米
+result = generate(mesh, config={"max_spheres": 32})
 
-## 使用现有 bowl / mug 配置
+# 已有顶点和三角面数组；faces是从0开始的整数索引
+result = generate_from_arrays(vertices, faces, unit_scale_m=0.001,
+                              config={"max_spheres": 32})
 
-`examples/configs/` 保留已有算法参数。碗和盒子的 USD preset 已将本机绝对路径改为
-相对于配置文件的 `../../assets/.../Aligned.usd`；资产本身不在仓库内。
-安装 USD 支持后，将资产放在对应目录，或修改 `source.usd_path`：
+# OBJ/PLY/STL文件
+result = generate_from_file("object.obj", unit_scale_m=0.001,
+                            config={"max_spheres": 32})
+```
+
+USD额外提供 `mesh_prim="/World/Object/Mesh"`。USD会应用作者变换并转换到Z-up，
+请检查 `result.coordinate_frame`；它不是自动计算好的机器人attach局部坐标。
+
+## 配置
+
+| 字段 | 默认值 | 含义 |
+|---|---|---|
+| geometry_policy | auto | 保守自动路由；或指定convex_hull / original_surface |
+| max_spheres | 64 | 整数1–64，上限而非一定用满 |
+| shape_hint | auto | auto / box / open_box / generic；结构提示，不强制路由 |
+| seed | 5 | 固定输入及依赖版本时可复现 |
+
+不需要人工提供杯沿、把手、角点、区域配额或每类半径。
+可不传config使用默认值；也可使用 `GenerationConfig(max_spheres=32)` 获得类型提示。
+
+## 不写程序也能运行
+
+在已有Python环境中：
 
 ```bash
-python -m pip install -c constraints-tested.txt -e '.[usd]'
-asset-spheres --preset examples/configs/bowl_001_auto_geometry.json \
-  --budget 32 --output outputs/bowl_001_spheres.json
+cd asset-collision-spheres
+python generate_spheres.py --mesh object.obj --unit-scale-m 0.001 \
+  --max-spheres 32 --output outputs/result.json
 ```
 
-USD loader 保留原静态预览的规则：选择一个明确的三角 Mesh，应用作者变换和显式单位比例，
-检查物理尺寸，然后转换到 Z-up。输出标记为 `usd_stage_transformed_z_up_m`，
-并记录变换矩阵；它不是自动计算好的机器人 attachment 局部坐标。
-`mesh_prim`、`unit_scale_m`、尺寸检查必须与实际资产一致。
+根目录入口会自动定位本项目源码，也支持从其他目录用绝对脚本路径执行。
+不指定配置文件时默认新auto路由；历史 `--config` / `--preset` 调用保持原语义。
 
-Mug 的 auto JSON 是纯生成配置，可配合已导出的完整材质 OBJ 使用 `--mesh --config`。
-Mug 手动区域配置带原资产尺寸与坐标假设，不能直接套到任意杯子上。
-CLI 在配置含 `regions` 时调用 `generate_mesh_region_spheres`，否则调用自动生成器。
+## 结构与兼容性
 
-## 模块与接入边界
+```text
+src/asset_collision_spheres/
+├── api.py        # 统一对外导出
+├── contracts.py  # GenerationConfig / SphereResult
+├── service.py    # 网格、数组、文件入口；只做校验、加载与分派
+├── algorithms/   # 既有v1/v2/v3/v4算法，保留分球策略
+├── geometry/     # 几何基础工具
+├── loaders/      # 文件、单位和坐标处理
+├── preview/      # 可选预览
+└── adapters/     # 可选FastSim/cuRobo接线
+```
 
-| 模块 | 作用 |
-| --- | --- |
-| `auto_geometry_spheres.py` | 自动几何分球与独立采样评估 |
-| `mesh_region_spheres.py` | 手动区域预算、材质深度与几何工具 |
-| `mesh_attachment.py` | 球合法性、网格指纹、预计算产物校验；不依赖仿真器 |
-| `attachment_spheres.py` | 历史解析形状接口（盒、开口盒、无把手杯等） |
-| `solid_box_regions.py` | 实心盒区域配置生成 |
-| `usd.py` | 可选 USD 加载；从原静态预览提取 |
+旧公开函数、旧模块别名、仿真adapter保留，不用修改原任务。
+新统一入口默认v4；旧生成函数没有因为接口整理而切换默认算法。
+稀疏球仍有局部漏检和槽口收缩风险，不代表零漏检或完整动态任务成功。
 
-原生 attachment 使用的 `fastsim/mesh-spheres/1` 保留在底层兼容代码中。
-本工具输出 `asset-collision-spheres/1`，两者不能通过改字段名直接互换：
-需先在调用方完成坐标转换、网格指纹与球容量核对。
-本次未改动原 FastSim 调用路径；原项目继续使用其原有模块，独立包后续修改也不会自动同步回原项目。
-Isaac 静态查看器、机器人规划、任务流水线、仿真数据集与运行日志不包含在此包内。
+详细说明：[接口与参数](docs/API.zh-CN.md)、[代码分层](docs/ARCHITECTURE.md)、
+[源码交接与后续GitHub准备](docs/GITHUB_PUBLISH.zh-CN.md)。
 
-## 来源与发布
+算法与已有实验：[几何路由v4](docs/GEOMETRY_ROUTER_V4.zh-CN.md)、
+[凸包v3](docs/CONVEX_SURFACE_V3.zh-CN.md)、[材料v2](docs/JOINT_V2.zh-CN.md)、
+[原有目录迁移](docs/REORGANIZATION.zh-CN.md)。
 
-提取范围和原文件 SHA256 见 [extraction_manifest.json](docs/extraction_manifest.json)。
-五个核心模块逐字复制自本地新增代码，原测试仅替换导入路径。
-保留原仓库 LICENSE 的 pending 状态，未擅自授予新的开源许可；公开发布前由权利人确定授权范围与许可证。
-GitHub 操作见 [发布指南](docs/GITHUB_PUBLISH.zh-CN.md)。
+本机资产在 `configs/local/`，结果在 `outputs/`，均不上传；
+现有环境/构建配置保留兼容，但本轮不生成安装包或新增安装流程。

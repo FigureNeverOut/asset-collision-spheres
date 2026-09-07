@@ -1,0 +1,14 @@
+{
+  "mode": "auto_geometry",
+  "shape_hint": "auto",
+  "sphere_count_mode": "fixed",
+  "sphere_budget": 32,
+  "outward_offset_mode": "fixed",
+  "max_outward_offset_m": 0.006,
+  "seed": 5,
+  "candidate_sample_count": 6000,
+  "patch_count": 64,
+  "probe_radius_m": 0.006,
+  "probe_penetration_m": 0.0015,
+  "repair_rounds": 1
+}

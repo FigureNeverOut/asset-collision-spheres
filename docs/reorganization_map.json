@@ -1,0 +1,41 @@
+{
+  "implementations": [
+    {
+      "old": "auto_geometry_spheres.py",
+      "implementation": "algorithms/auto_geometry.py"
+    },
+    {
+      "old": "mesh_region_spheres.py",
+      "implementation": "algorithms/mesh_regions.py"
+    },
+    {
+      "old": "mesh_attachment.py",
+      "implementation": "adapters/fastsim.py"
+    },
+    {
+      "old": "attachment_spheres.py",
+      "implementation": "algorithms/analytic.py"
+    },
+    {
+      "old": "solid_box_regions.py",
+      "implementation": "algorithms/solid_box.py"
+    }
+  ],
+  "configuration_files": {
+    "1e_mug_auto_geometry.json": "mug/1e_mug_auto_geometry.json",
+    "1e_mug_auto_geometry_32.json": "mug/1e_mug_auto_geometry_32.json",
+    "box_167_auto_geometry.json": "box/box_167_auto_geometry.json",
+    "1e_mug_mesh_regions.json": "mug/1e_mug_mesh_regions.json",
+    "demo_auto.json": "demo/demo_auto.json",
+    "bowl_001_auto_geometry.json": "bowl/bowl_001_auto_geometry.json"
+  },
+  "legacy_entry_points": {
+    "preview_1e_mug_spheres": "asset_collision_spheres.adapters.workspace.mug",
+    "preview_1e_mug_auto": "asset_collision_spheres.adapters.workspace.mug_auto",
+    "preview_1g_book_comparison": "asset_collision_spheres.adapters.workspace.book_comparison",
+    "preview_curobo_matched": "asset_collision_spheres.adapters.workspace.curobo_matched",
+    "preview_1g_book_spheres": "asset_collision_spheres.adapters.workspace.book",
+    "preview_mesh_spheres": "asset_collision_spheres.preview.mesh",
+    "isaac_preview_health": "asset_collision_spheres.preview.health"
+  }
+}

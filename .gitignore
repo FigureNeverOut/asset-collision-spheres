@@ -7,7 +7,11 @@ build/
 dist/
 outputs/
 assets/
+configs/local/
 .env
 .env.*
 .DS_Store
 *.log
+.ruff_cache/
+# Local workspace status note is preserved in-place, not distributed.
+docs/凸包碰撞球_当前实现与验证现状.md

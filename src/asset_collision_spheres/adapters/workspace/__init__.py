@@ -1,0 +1,1 @@
+"""adapters workspace support."""

@@ -1,4 +1,7 @@
-# Extraction verification — 2026-09-07
+# Initial extraction verification — version 0.1.0
+
+This is the historical extraction report. For the 0.1.1 reorganization, see
+[REORGANIZATION.zh-CN.md](REORGANIZATION.zh-CN.md).
 
 Python 3.12 on Linux; dependency versions are recorded in `constraints-tested.txt`.
 The dedicated `.venv` does not expose system site-packages. Dependencies were

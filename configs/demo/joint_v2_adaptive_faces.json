@@ -1,0 +1,10 @@
+{
+  "mode": "auto_geometry",
+  "shape_hint": "auto",
+  "sphere_count_mode": "adaptive",
+  "max_spheres": null,
+  "outward_offset_mode": "scale_aware",
+  "max_outward_offset_m": null,
+  "extra_face_spheres": 8,
+  "seed": 5
+}

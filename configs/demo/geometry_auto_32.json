@@ -1,0 +1,5 @@
+{
+  "mode": "auto_geometry",
+  "geometry_policy": "auto",
+  "max_spheres": 32
+}

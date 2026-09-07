@@ -3,3 +3,9 @@ include constraints-tested.txt
 recursive-include docs *.md *.json
 recursive-include examples *.py *.json
 recursive-include tests *.py
+include configs/__init__.py
+recursive-include configs/demo *.json
+recursive-include configs/mug *.json
+recursive-include configs/bowl *.json
+recursive-include configs/box *.json
+recursive-exclude configs/local *
